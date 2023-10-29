@@ -1,0 +1,64 @@
+ALTER TABLE publishing_house
+ADD PRIMARY KEY (id);
+
+ALTER TABLE book
+ADD PRIMARY KEY (id);
+
+ALTER TABLE librarian
+ADD PRIMARY KEY (id);
+
+ALTER TABLE reader
+ADD PRIMARY KEY (id);
+
+ALTER TABLE take_book
+ADD PRIMARY KEY (book_id, librarian_id, reader_id);
+
+ALTER TABLE book
+ADD CONSTRAINT unique_book_name_author UNIQUE (name, author);
+
+ALTER TABLE publishing_house
+ALTER COLUMN name SET NOT NULL,
+ALTER COLUMN city SET NOT NULL,
+ALTER COLUMN id SET NOT NULL;
+
+ALTER TABLE book
+ALTER COLUMN name SET NOT NULL,
+ALTER COLUMN author SET NOT NULL,
+ALTER COLUMN publishing_year SET NOT NULL,
+ALTER COLUMN publisher_id SET NOT NULL,
+ALTER COLUMN id SET NOT NULL;
+
+ALTER TABLE librarian
+ALTER COLUMN first_name SET NOT NULL,
+ALTER COLUMN last_name SET NOT NULL,
+ALTER COLUMN patronymic SET NOT NULL,
+ALTER COLUMN id SET NOT NULL;
+
+ALTER TABLE reader
+ALTER COLUMN first_name SET NOT NULL,
+ALTER COLUMN last_name SET NOT NULL,
+ALTER COLUMN patronymic SET NOT NULL,
+ALTER COLUMN birth_date SET NOT NULL,
+ALTER COLUMN id SET NOT NULL;
+
+ALTER TABLE take_book
+ALTER COLUMN book_id SET NOT NULL,
+ALTER COLUMN librarian_id SET NOT NULL,
+ALTER COLUMN reader_id SET NOT NULL,
+ALTER COLUMN take_date SET NOT NULL,
+ALTER COLUMN return_date SET NOT NULL;
+
+ALTER TABLE take_book
+ADD CONSTRAINT fk_book FOREIGN KEY (book_id)
+REFERENCES book (id);
+
+ALTER TABLE take_book
+ADD CONSTRAINT fk_librarian FOREIGN KEY (librarian_id)
+REFERENCES librarian (id);
+
+ALTER TABLE take_book
+ADD CONSTRAINT fk_reader FOREIGN KEY (reader_id)
+REFERENCES reader (id);
+
+ALTER TABLE book
+ADD CONSTRAINT check_publishing_year CHECK (publishing_year > 0);
